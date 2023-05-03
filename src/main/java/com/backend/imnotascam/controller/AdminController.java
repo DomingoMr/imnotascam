@@ -27,6 +27,9 @@ public class AdminController {
     @DeleteMapping(value = "/deleteBlackListUrl")
     public Response deleteBlackListUrl(@RequestBody UrlBody url) {return adminService.deleteBlackListUrl(url.getUrl());}
 
+    @GetMapping(value = "/getBlackList")
+    public Response getBlackList() {return adminService.getBlackList();}
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////WHITE LIST//////////////////////////////////////////////////////////////
@@ -38,6 +41,9 @@ public class AdminController {
 
     @DeleteMapping(value = "/deleteWhiteListUrl")
     public Response deleteWhiteListUrl(@RequestBody UrlBody url) {return adminService.deleteWhiteListUrl(url.getUrl());}
+
+    @GetMapping(value = "/getWhiteList")
+    public Response getWhiteList() {return adminService.getWhiteList();}
 
 
 }

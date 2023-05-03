@@ -5,11 +5,15 @@ import com.backend.imnotascam.entity.TBlackList;
 import com.backend.imnotascam.entity.TWhiteList;
 import com.backend.imnotascam.repository.BlackListRepository;
 import com.backend.imnotascam.repository.WhiteListRepository;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -81,6 +85,24 @@ public class AdminService {
         return response;
     }
 
+    public Response getBlackList() {
+        Response response = new Response();
+
+        try {
+            List<TBlackList> list = blackListRepository.findAll();
+
+            response.setCode("0");
+            response.setData(list.toString());
+            response.setDescription("Lista de urls de la lista negra");
+        } catch (Exception e) {
+            response.setCode("100");
+            response.setData(e.getMessage());
+            response.setDescription("Error no controlado");
+        }
+
+        return response;
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////WHITE LIST//////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -134,6 +156,24 @@ public class AdminService {
             response.setCode("1");
             response.setData(e.getMessage());
             response.setDescription("Error controlado");
+        } catch (Exception e) {
+            response.setCode("100");
+            response.setData(e.getMessage());
+            response.setDescription("Error no controlado");
+        }
+
+        return response;
+    }
+
+    public Response getWhiteList() {
+        Response response = new Response();
+
+        try {
+            List<TWhiteList> list = whiteListRepository.findAll();
+
+            response.setCode("0");
+            response.setData(list.toString());
+            response.setDescription("Lista de urls de la lista blanca");
         } catch (Exception e) {
             response.setCode("100");
             response.setData(e.getMessage());

@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Data
-@ToString
 @Entity
 @Table(name = "t_white_list")
 @NoArgsConstructor
