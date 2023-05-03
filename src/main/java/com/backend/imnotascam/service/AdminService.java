@@ -20,11 +20,14 @@ public class AdminService {
 
     private final WhiteListRepository whiteListRepository;
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////BLACK LIST//////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Response addToBlackList(String url) {
         Response response = new Response();
 
         try {
-            //Compruebo que la url este ya registrada
+            //Compruebo que la url no este ya registrada
             Optional<TBlackList> blackListOptional = blackListRepository.findByUrl(url);
             if (blackListOptional.isPresent()) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Url ya registrada");
@@ -49,11 +52,43 @@ public class AdminService {
         return response;
     }
 
+    public Response deleteBlackListUrl(String url){
+        Response response = new Response();
+
+        try {
+            //Compruebo que la url este registrada
+            Optional<TBlackList> blackListOptional = blackListRepository.findByUrl(url);
+            if (!blackListOptional.isPresent()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Url no econtrada");
+            }
+
+            //Guardo el registro
+            blackListRepository.delete(blackListOptional.get());
+
+            response.setCode("0");
+            response.setData("Url: " + url);
+            response.setDescription("Url borrada de la lista negra");
+        } catch (ResponseStatusException e) {
+            response.setCode("1");
+            response.setData(e.getMessage());
+            response.setDescription("Error controlado");
+        } catch (Exception e) {
+            response.setCode("100");
+            response.setData(e.getMessage());
+            response.setDescription("Error no controlado");
+        }
+
+        return response;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////WHITE LIST//////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Response addToWhiteList(String url) {
         Response response = new Response();
 
         try {
-            //Compruebo que la url este ya registrada
+            //Compruebo que la url no este ya registrada
             Optional<TWhiteList> whiteListOptional = whiteListRepository.findByUrl(url);
             if (whiteListOptional.isPresent()) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Url ya registrada");
@@ -77,6 +112,35 @@ public class AdminService {
         }
             return response;
 
+    }
+
+    public Response deleteWhiteListUrl(String url){
+        Response response = new Response();
+
+        try {
+            //Compruebo que la url este registrada
+            Optional<TWhiteList> whiteListOptional = whiteListRepository.findByUrl(url);
+            if (!whiteListOptional.isPresent()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Url no econtrada");
+            }
+
+            //Guardo el registro
+            whiteListRepository.delete(whiteListOptional.get());
+
+            response.setCode("0");
+            response.setData("Url: " + url);
+            response.setDescription("Url borrada de la lista blanca");
+        } catch (ResponseStatusException e) {
+            response.setCode("1");
+            response.setData(e.getMessage());
+            response.setDescription("Error controlado");
+        } catch (Exception e) {
+            response.setCode("100");
+            response.setData(e.getMessage());
+            response.setDescription("Error no controlado");
+        }
+
+        return response;
     }
 
 
